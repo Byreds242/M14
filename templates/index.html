@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrar Alumnes Matriculats</title>
+</head>
+<body>
+    <h1>Filtrar Alumnes Matriculats</h1>
+    <form id="filtros">
+        <label for="curs">Curs:</label>
+        <select name="curs" id="curs">
+            {% for curs in cursos %}
+                <option value="{{ curs }}">{{ curs }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="centro">Centre:</label>
+        <select name="centro" id="centro">
+            {% for centro in centros %}
+                <option value="{{ centro }}">{{ centro }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="naturaleza">Naturalesa:</label>
+        <select name="naturaleza" id="naturaleza">
+            {% for naturaleza in naturalezas %}
+                <option value="{{ naturaleza }}">{{ naturaleza }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="area">Àrea territorial:</label>
+        <select name="area" id="area">
+            {% for area in areas %}
+                <option value="{{ area }}">{{ area }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="grado">Grau:</label>
+        <select name="grado" id="grado">
+            {% for grado in grados %}
+                <option value="{{ grado }}">{{ grado }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="ensenyament">Ensenyament:</label>
+        <select name="ensenyament" id="ensenyament">
+            {% for ensenyament in ensenyaments %}
+                <option value="{{ ensenyament }}">{{ ensenyament }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="modalitat">Modalitat:</label>
+        <select name="modalitat" id="modalitat">
+            {% for modalitat in modalitats %}
+                <option value="{{ modalitat }}">{{ modalitat }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="button" onclick="filtrar()">Filtrar</button>
+    </form>
+
+    <h2>Resultats:</h2>
+    <p>Homes: <span id="total_hombres">0</span></p>
+    <p>Dones: <span id="total_dones">0</span></p>
+
+    <script>
+        async function filtrar() {
+            const form = document.getElementById("filtros");
+            const data = new FormData(form);
+            const response = await fetch("/filtrar", {
+                method: "POST",
+                body: data,
+            });
+            const result = await response.json();
+            document.getElementById("total_hombres").textContent = result.total_hombres;
+            document.getElementById("total_dones").textContent = result.total_mujeres;
+        }
+    </script>
+</body>
+</html>
